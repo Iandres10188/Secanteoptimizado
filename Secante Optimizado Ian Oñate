@@ -1,0 +1,31 @@
+def secant_method(f, x0, x1, tol=1e-6, max_iter=100):
+    """
+    Secant method for finding the root of a function.
+
+    # Parameters
+    * ``f``: The function for which to find the root.
+    * ``x0``, x1: Initial guesses for the root.
+    * ``tol``: Tolerance for convergence (default: 1e-6).
+    * ``max_iter``: Maximum number of iterations (default: 100).
+
+    # Returns
+    * ``x_curr`` The approximate root of the function.
+    * ``iter_count`` The number of iterations taken.
+    """
+    x_prev = x0
+    x_curr = x1
+    f_prev = f(x_prev)
+    f_curr = f(x_curr)
+    iter_count = 0
+
+    while abs(f_curr) > tol and iter_count < max_iter:
+        if f_curr == f_prev:  # Avoid division by zero
+            raise ValueError("Division by zero encountered in the secant method.")
+        
+        x_next = x_curr - f_curr * (x_curr - x_prev) / (f_curr - f_prev)
+        # Update variables for the next iteration
+        x_prev, f_prev = x_curr, f_curr
+        x_curr, f_curr = x_next, f(x_next)
+        iter_count += 1
+
+    return x_curr, iter_count
